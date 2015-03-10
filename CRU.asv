@@ -77,10 +77,10 @@ MeanNegErrorTest = sum(Classm_test*w >= t);
 MeanTestError = ((MeanPosErrorTest + MeanNegErrorTest)/(size(Test,1))) 
 
 HistClass(Classp_train,Classm_train,w,t,...
-    'Mean Method Training Results',MeanTrainError); %Histogram of Mean Training Results
+    'Mean Method Training Results',MeanTrainError); %Histogram of Mean T
 
 HistClass(Classp_train,Classm_train,w,t,...
-    'Mean Method Testing Results',MeanTestError); %Histogram of Mean Testing Results
+    'Mean Method Testing Results',MeanTestError);
 
 %% DatasetA.csv Fisher Method
 % Construct the Fisher Linear Discriminant
