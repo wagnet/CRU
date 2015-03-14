@@ -15,7 +15,7 @@ a = diag(1./s);
 [m,n] = size(D);
 one_m = ones(m,m);
 
-D = (D - (1/m)*(ones(m,m)*D))*a; 
+DA = (D - (1/m)*(ones(m,m)*D))*a; 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Training and testing matrices for DatasetA
@@ -26,19 +26,19 @@ D = (D - (1/m)*(ones(m,m)*D))*a;
 % Classm_test   := Class -1 testing  data
 
 % Set random number to an initial seed
-[r,c]=size(D);
+[r,c]=size(DA);
 s=RandStream('mt19937ar','Seed',550);
 %generate a permutation of the data
 p=randperm(s,r);
-D=D(p,:);
+DA=DA(p,:);
 Y=Y(p);
 %Use trainpct percent of the data for training and the rest for testing.
 trainpct=.90;
 train_size=ceil(r*trainpct);
 
 % Grab training and test data
-Train = D(1:train_size,:);
-Test = D(train_size+1:end,:);
+Train = DA(1:train_size,:);
+Test = DA(train_size+1:end,:);
 YTrain = Y(1:train_size,:);
 YTest = Y(train_size+1:end,:);
 
@@ -116,6 +116,18 @@ FisherTestError= ((FisherPosErrorTest + FisherNegErrorTest)/(size(Test,1)))
 
 HistClass(Classp_test,Classm_test,wfisher,tfisher,...
     'Fisher Method Testing Results',FisherTestError); % Histogram of Fisher Testing Results
+%% Mean and Covariance for A
+DAp = [(Classp_train)' Classp_test']';
+DAm = [Classm_test' Classm_train']';
+
+[mp,np]=size(DAp);
+[mm,nm]=size(DAm);
+
+DAp_mean = (1/mp)*ones(1,mp)*DAp
+DAm_mean = (1/mm)*ones(1,mm)*DAm
+
+CovAp = (1/(mp-1))*DAp'*DAp
+CovAm = (1/(mm-1))*DAm'*DAm
 
 %% DatasetV Analysis
 

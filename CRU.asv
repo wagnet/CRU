@@ -15,7 +15,7 @@ a = diag(1./s);
 [m,n] = size(D);
 one_m = ones(m,m);
 
-D = (D - (1/m)*(ones(m,m)*D))*a; 
+DA = (D - (1/m)*(ones(m,m)*D))*a; 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Training and testing matrices for DatasetA
@@ -26,19 +26,19 @@ D = (D - (1/m)*(ones(m,m)*D))*a;
 % Classm_test   := Class -1 testing  data
 
 % Set random number to an initial seed
-[r,c]=size(D);
+[r,c]=size(DA);
 s=RandStream('mt19937ar','Seed',550);
 %generate a permutation of the data
 p=randperm(s,r);
-D=D(p,:);
+DA=DA(p,:);
 Y=Y(p);
 %Use trainpct percent of the data for training and the rest for testing.
 trainpct=.90;
 train_size=ceil(r*trainpct);
 
 % Grab training and test data
-Train = D(1:train_size,:);
-Test = D(train_size+1:end,:);
+Train = DA(1:train_size,:);
+Test = DA(train_size+1:end,:);
 YTrain = Y(1:train_size,:);
 YTest = Y(train_size+1:end,:);
 
@@ -116,7 +116,7 @@ FisherTestError= ((FisherPosErrorTest + FisherNegErrorTest)/(size(Test,1)))
 
 HistClass(Classp_test,Classm_test,wfisher,tfisher,...
     'Fisher Method Testing Results',FisherTestError); % Histogram of Fisher Testing Results
-
+%% Mean and Cov
 %% DatasetV Analysis
 
 DV = csvread('DatasetV.csv');
@@ -134,7 +134,7 @@ NClassCount = sum(DV*wfisher < tfisher)
 
 
 %Covariance of DV
-CovDV = (1/(m-1)*DV'*DV
+CovDV = (1/(m-1))*DV'*DV
 
 figure 
 hold on
