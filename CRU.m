@@ -116,3 +116,31 @@ FisherTestError= ((FisherPosErrorTest + FisherNegErrorTest)/(size(Test,1)))
 
 HistClass(Classp_test,Classm_test,wfisher,tfisher,...
     'Fisher Method Testing Results',FisherTestError); % Histogram of Fisher Testing Results
+
+%% DatasetV Analysis
+
+DV = csvread('DatasetV.csv');
+
+s=std(DV);
+a = diag(1./s);
+[m,n] = size(DV);
+one_m = ones(m,m);
+
+DVmean = (1/m)*ones(1,m)*DV
+DV = (DV - (1/m)*(ones(m,m)*DV))*a; 
+
+PClassCount = sum(DV*wfisher > tfisher)
+NClassCount = sum(DV*wfisher < tfisher)
+
+
+%Covariance of DV
+CovDV = (1/(m-1))*DV'*DV
+
+figure 
+hold on
+imagesc(CovDV)
+title('Covariance Matrix of DatasetV')
+colormap(gray)
+colorbar
+hold off
+
