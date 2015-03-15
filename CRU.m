@@ -184,8 +184,8 @@ one_m = ones(m,m);
 DVmean = (1/m)*ones(1,m)*DV
 DV = (DV - (1/m)*(ones(m,m)*DV))*a; 
 
-PClassCount = sum(DV*wfisher > tfisher)
-NClassCount = sum(DV*wfisher < tfisher)
+PClassCount = sum(DV*wFishMed > tFishMed)
+NClassCount = sum(DV*wFishMed < tFishMed)
 
 
 %Covariance of DV
