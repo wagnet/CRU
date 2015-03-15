@@ -6,8 +6,9 @@
 % and extract the matrix D of observations and vector y of class labels (1 or -1).  
 Doriginal = csvread('DatasetA.csv');
 
+IDA=Doriginal(:,1) %id column
 Y=Doriginal(:,end);   % Y contains the class labels 1 or -1
-D=Doriginal(:,1:(end-1));  % All the rest are the features 
+D=Doriginal(:,2:(end-1));  % All the rest are the features 
 
 %Transform the Data Matrix D to have mean 0 and standard deviation 1.   
 s=std(D);
@@ -175,6 +176,9 @@ HistClass(Classp_train,Classm_train,wFishMed,tFishMed,...
 %% DatasetV Analysis
 
 DV = csvread('DatasetV.csv');
+
+IDV=DV(:,1) %id column
+DV=DV(:,2:(end-1))
 
 s=std(DV);
 a = diag(1./s);
