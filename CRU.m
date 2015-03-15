@@ -126,8 +126,51 @@ DAm = [Classm_test' Classm_train']';
 DAp_mean = (1/mp)*ones(1,mp)*DAp
 DAm_mean = (1/mm)*ones(1,mm)*DAm
 
-CovAp = (1/(mp-1))*DAp'*DAp
-CovAm = (1/(mm-1))*DAm'*DAm
+CovAp = (1/(mp-1))*DAp'*DAp %Covariance of class 1
+CovAm = (1/(mm-1))*DAm'*DAm %Covariance of class -1
+
+%class 1
+figure 
+hold on
+imagesc(CovAp)
+title('Covariance Matrix of Class 1 DatasetA')
+colormap(gray)
+colorbar
+%class -1
+figure
+imagesc(CovAm)
+title('Covariance Matrix of Class -1 DatasetA')
+colormap(gray)
+colorbar
+hold off
+
+
+%% FisherMedian DatasetA
+
+medianp=median(Classp_train);
+medianm=median(Classm_train);
+
+BMp=Classp_train-ones(psize,1)*medianp;
+BMn=Classm_train-ones(nsize,1)*medianm;
+Sw=BMp'*BMp+BMn'*BMn;
+wFishMed = Sw\(medianp-medianm)';
+wFishMed=wFishMed/norm(wFishMed)
+
+tFishMed=(medianp+medianm)./2*wFishMed
+
+MedFishPosErrorTrain = sum(Classp_train*wFishMed <= tFishMed);
+MedFishNegErrorTrain = sum(Classm_train*wFishMed >= tFishMed);
+MedFishTrainError = ((MedFishPosErrorTrain + MedFishNegErrorTrain)/(size(Train,1)));
+
+MedFishPosErrorTest = sum(Classp_test*wFishMed <= tFishMed);
+MedFishNegErrorTest = sum(Classm_test*wFishMed >= tFishMed);
+MedFishTestError= ((MedFishPosErrorTest + MedFishNegErrorTest)/(size(Test,1)));
+
+HistClass(Classp_test,Classm_test,wFishMed,tFishMed,...
+    'MedianFisher Method Testing Results',MedFishTestError);
+
+HistClass(Classp_train,Classm_train,wFishMed,tFishMed,...
+    'MedianFisher Training Results',MedFishTrainError);
 
 %% DatasetV Analysis
 
