@@ -178,7 +178,7 @@ HistClass(Classp_train,Classm_train,wFishMed,tFishMed,...
 DV = csvread('DatasetV.csv');
 
 IDV=DV(:,1) %id column
-DV=DV(:,2:(end-1))
+DV=DV(:,2:end)
 
 s=std(DV);
 a = diag(1./s);
