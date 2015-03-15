@@ -132,18 +132,19 @@ CovAm = (1/(mm-1))*DAm'*DAm %Covariance of class -1
 
 %class 1
 figure 
-hold on
 imagesc(CovAp)
 title('Covariance Matrix of Class 1 DatasetA')
 colormap(gray)
 colorbar
+
+
 %class -1
 figure
 imagesc(CovAm)
 title('Covariance Matrix of Class -1 DatasetA')
 colormap(gray)
 colorbar
-hold off
+
 
 
 %% FisherMedian DatasetA
@@ -196,10 +197,9 @@ NClassCount = sum(DV*wFishMed < tFishMed)
 CovDV = (1/(m-1))*DV'*DV
 
 figure 
-hold on
 imagesc(CovDV)
 title('Covariance Matrix of DatasetV')
 colormap(gray)
 colorbar
-hold off
+
 
