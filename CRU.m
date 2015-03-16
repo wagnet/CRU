@@ -192,6 +192,15 @@ DV = (DV - (1/m)*(ones(m,m)*DV))*a;
 PClassCount = sum(DV*wFishMed > tFishMed)
 NClassCount = sum(DV*wFishMed < tFishMed)
 
+classes=ones(m,1);
+for i=1:m,
+    if(DV(i,:)*wFishMed <= tFishMed)
+        classes(i,1)=-1;
+    end 
+end
+
+DVLabels = cat(2,IDV,classes)
+csvwrite('DatasetVnames.csv',DVLabels)
 
 %Covariance of DV
 CovDV = (1/(m-1))*DV'*DV
