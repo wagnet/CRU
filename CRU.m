@@ -6,7 +6,7 @@
 % and extract the matrix D of observations and vector y of class labels (1 or -1).  
 Doriginal = csvread('DatasetA.csv');
 
-IDA=Doriginal(:,1) %id column
+IDA=Doriginal(:,1); %id column
 Y=Doriginal(:,end);   % Y contains the class labels 1 or -1
 D=Doriginal(:,2:(end-1));  % All the rest are the features 
 
@@ -127,6 +127,18 @@ DAm = [Classm_test' Classm_train']';
 DAp_mean = (1/mp)*ones(1,mp)*DAp
 DAm_mean = (1/mm)*ones(1,mm)*DAm
 
+figure
+imagesc(DAp_mean)
+title('Mean Vector of Class 1 DatasetA')
+colormap(gray)
+colorbar
+
+figure
+imagesc(DAm_mean)
+title('Mean Vector of Class -1 DatasetA')
+colormap(gray)
+colorbar
+
 CovAp = (1/(mp-1))*DAp'*DAp %Covariance of class 1
 CovAm = (1/(mm-1))*DAm'*DAm %Covariance of class -1
 
@@ -204,6 +216,12 @@ csvwrite('DatasetVnames.csv',DVLabels)
 
 %Covariance of DV
 CovDV = (1/(m-1))*DV'*DV
+
+figure
+imagesc(DVmean)
+title('Mean Vector DatasetV')
+colormap(gray)
+colorbar
 
 figure 
 imagesc(CovDV)
