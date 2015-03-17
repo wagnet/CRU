@@ -60,21 +60,21 @@ colorbar
 % Classp_test   := Class 1 testing data
 % Classm_test   := Class -1 testing  data
 
-DA=UnIDA
+
 % Set random number to an initial seed
-[r,c]=size(DA);
+[r,c]=size(UnIDA);
 s=RandStream('mt19937ar','Seed',550);
 %generate a permutation of the data
 p=randperm(s,r);
-DA=DA(p,:);
+UnIDA=UnIDA(p,:);
 Y=Class(p);
 %Use trainpct percent of the data for training and the rest for testing.
 trainpct=.90;
 train_size=ceil(r*trainpct);
 
 % Grab training and test data
-Train = DA(1:train_size,:);
-Test = DA(train_size+1:end,:);
+Train = UnIDA(1:train_size,:);
+Test = UnIDA(train_size+1:end,:);
 YTrain = Y(1:train_size,:);
 YTest = Y(train_size+1:end,:);
 
