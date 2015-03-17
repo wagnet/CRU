@@ -15,7 +15,7 @@ s=std(DAp);
 a = diag(1./s);
 [m,n] = size(DAp);
 one_m = ones(m,m);
-DAp = (DAp - (1/m)*(ones(m,m)*DAp))*a;
+%DAp = (DAp - (1/m)*(ones(m,m)*DAp))*a;
 
 DAm = DA(Y==-1,:); %Class -1 of DSA;
 s=std(DAm);
@@ -23,7 +23,7 @@ a = diag(1./s);
 [m,n] = size(DAm);
 one_m = ones(m,m);
 
-DAm = (DAm - (1/m)*(ones(m,m)*DAm))*a;
+%DAm = (DAm - (1/m)*(ones(m,m)*DAm))*a;
 
 %Transform the Data Matrix D to have mean 0 and standard deviation 1.   
 s=std(DA);
