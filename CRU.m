@@ -8,15 +8,30 @@ Doriginal = csvread('DatasetA.csv');
 
 IDA=Doriginal(:,1); %id column
 Y=Doriginal(:,end);   % Y contains the class labels 1 or -1
-D=Doriginal(:,2:(end-1));  % All the rest are the features 
+DA=Doriginal(:,2:(end-1));  % All the rest are the features 
 
-%Transform the Data Matrix D to have mean 0 and standard deviation 1.   
-s=std(D);
+DAp = DA(Y==1,:); %Class 1 of DSA;
+s=std(DAp);
 a = diag(1./s);
-[m,n] = size(D);
+[m,n] = size(DAp);
+one_m = ones(m,m);
+DAp = (DAp - (1/m)*(ones(m,m)*DAp))*a;
+
+DAm = DA(Y==-1,:); %Class -1 of DSA;
+s=std(DAm);
+a = diag(1./s);
+[m,n] = size(DAm);
 one_m = ones(m,m);
 
-DA = (D - (1/m)*(ones(m,m)*D))*a; 
+DAm = (DAm - (1/m)*(ones(m,m)*DAm))*a;
+
+%Transform the Data Matrix D to have mean 0 and standard deviation 1.   
+s=std(DA);
+a = diag(1./s);
+[m,n] = size(DA);
+one_m = ones(m,m);
+
+DA = (DA - (1/m)*(ones(m,m)*DA))*a; 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Training and testing matrices for DatasetA
@@ -118,8 +133,8 @@ FisherTestError= ((FisherPosErrorTest + FisherNegErrorTest)/(size(Test,1)))
 HistClass(Classp_test,Classm_test,wfisher,tfisher,...
     'Fisher Method Testing Results',FisherTestError); % Histogram of Fisher Testing Results
 %% Mean and Covariance for A
-DAp = [(Classp_train)' Classp_test']';
-DAm = [Classm_test' Classm_train']';
+%DAp = [(Classp_train)' Classp_test']';
+%DAm = [Classm_test' Classm_train']';
 
 [mp,np]=size(DAp);
 [mm,nm]=size(DAm);
