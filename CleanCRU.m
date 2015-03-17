@@ -4,9 +4,7 @@ Doriginal = csvread('DatasetA.csv');
 %Break D into id's, class, and features
 IDA=Doriginal(:,1); %id column
 Class=Doriginal(:,end);   % Y contains the class labels 1 or -1
-DA=Doriginal(:,2:(end-1));  % All the rest are the features
-
-UnIDA=Doriginal(:,2:end);
+DA=Doriginal(:,2:(end-1));  % All the rest are the featuresUnIDA=Doriginal(:,2:end);
 
 %% define positive class and calculate mean and covariance
 DAp = DA(Class==1,:); %Class 1 of DSA;
@@ -62,19 +60,19 @@ colorbar
 
 
 % Set random number to an initial seed
-[r,c]=size(UnIDA);
+[r,c]=size(DA);
 s=RandStream('mt19937ar','Seed',550);
 %generate a permutation of the data
 p=randperm(s,r);
-UnIDA=UnIDA(p,:);
+DA=DA(p,:);
 Y=Class(p);
 %Use trainpct percent of the data for training and the rest for testing.
 trainpct=.90;
 train_size=ceil(r*trainpct);
 
 % Grab training and test data
-Train = UnIDA(1:train_size,:);
-Test = UnIDA(train_size+1:end,:);
+Train = DA(1:train_size,:);
+Test = DA(train_size+1:end,:);
 YTrain = Y(1:train_size,:);
 YTest = Y(train_size+1:end,:);
 
@@ -86,7 +84,7 @@ Classp_test = Test(YTest==1,:);
 Classm_test = Test(YTest==-1,:);
 
 %% Mean Method on DatasetA
-
+%{
 
 %Calculate the mean classifier 
 
@@ -118,3 +116,43 @@ HistClass(Classp_train,Classm_train,w,t,...
 
 HistClass(Classp_train,Classm_train,w,t,...
     'Mean Method Testing Results',MeanTestError); %Histogram of Mean Testing Results
+%}
+
+%% Fisher method on DatasetA
+meanp=mean(Classp_train);
+meanm=mean(Classm_train);
+
+
+psize=size(Classp_train,1)
+nsize=size(Classm_train,1)
+Bp=Classp_train
+Bn=Classm_train
+%Bp=Classp_train-ones(psize,1)*meanp
+%Bn=Classm_train-ones(nsize,1)*meanm;
+
+Sw=Bp'*Bp+Bn'*Bn;
+wfisher = Sw\(meanp-meanm)';
+wfisher=wfisher/norm(wfisher)
+
+tfisher=(meanp+meanm)./2*wfisher%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Analyze training data  results of the Fisher Linear Discriminant
+
+FisherPosErrorTrain = sum(Classp_train*wfisher <= tfisher)%
+FisherNegErrorTrain = sum(Classm_train*wfisher >= tfisher)%
+
+FisherTrainError= ((FisherPosErrorTrain + FisherNegErrorTrain)/(size(Train,1)))  
+
+HistClass(Classp_train,Classm_train,wfisher,tfisher,...
+    'Fisher Method Training Results',FisherTrainError); % Histogram of Fisher Training Results
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+FisherPosErrorTest = sum(Classp_test*wfisher <= tfisher);
+FisherNegErrorTest = sum(Classm_test*wfisher >= tfisher);
+
+FisherTestError= ((FisherPosErrorTest + FisherNegErrorTest)/(size(Test,1)))   
+
+HistClass(Classp_test,Classm_test,wfisher,tfisher,...
+    'Fisher Method Testing Results',FisherTestError); % Histogram of Fisher Testing Results
