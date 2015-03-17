@@ -4,7 +4,9 @@ Doriginal = csvread('DatasetA.csv');
 %Break D into id's, class, and features
 IDA=Doriginal(:,1); %id column
 Class=Doriginal(:,end);   % Y contains the class labels 1 or -1
-DA=Doriginal(:,2:(end-1));  % All the rest are the features 
+DA=Doriginal(:,2:(end-1));  % All the rest are the features
+
+UnIDA=Doriginal(:,2:end);
 
 %% define positive class and calculate mean and covariance
 DAp = DA(Class==1,:); %Class 1 of DSA;
@@ -58,13 +60,14 @@ colorbar
 % Classp_test   := Class 1 testing data
 % Classm_test   := Class -1 testing  data
 
+DA=UnIDA
 % Set random number to an initial seed
 [r,c]=size(DA);
 s=RandStream('mt19937ar','Seed',550);
 %generate a permutation of the data
 p=randperm(s,r);
 DA=DA(p,:);
-Y=Y(p);
+Y=Class(p);
 %Use trainpct percent of the data for training and the rest for testing.
 trainpct=.90;
 train_size=ceil(r*trainpct);
