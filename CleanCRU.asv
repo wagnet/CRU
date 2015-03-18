@@ -243,10 +243,10 @@ colormap(gray)
 colorbar
 
 
-DV_labeled = csvread('DatasetVnames.csv');
+DV_lab = csvread('DatasetVnames.csv');
 
-DVPos = sum(DV_labeled(:,2)==1) %Number of points in DV estimated to be class 1
-DVNeg = sum(DV_labeled(:,2)==-1) %Number of points in DB estimated to be class -1
+DVPos = sum(DV_lab(:,2)==1);
+DVNeg = sum(DV_lab(:,2)==-1);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% DA ErrorsFisher
@@ -255,4 +255,4 @@ DAnmis = abs(sum(DA*wfisher <= tfisher) - size(DA(Y==-1,:),1)); %Number of erron
 DAPosError = DApmis/size(DAp,1)
 DANegError = DAnmis/size(DAn,1)
 
-TotalDAError = (DApmis+DAnmis)/size(DA,1)%Total error of Fisher on DatasetA
+TotalDAError = (DApmis+DAnmis)/size(DA,1)
