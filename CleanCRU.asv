@@ -1,4 +1,4 @@
-%%MAT Cousulting for Chem R US by Tom Wagner, Alexander Allen, MingYi Wang
+%%MAT Cousulting for Chem R US by Tom Wagner, Alexander Alle
 
 %read in D
 Doriginal = csvread('DatasetA.csv');
