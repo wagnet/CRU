@@ -251,8 +251,8 @@ DVNeg = sum(DV_labeled(:,2)==-1) %Number of points in DB estimated to be class -
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% DA ErrorsFisher
-DApmis = abs(sum(DA*wfisher >= tfisher) - size(DA(Y==1,:),1)); %Number of erroneous class 1 points using fisher method
-DAnmis = abs(sum(DA*wfisher <= tfisher) - size(DA(Y==-1,:),1)); %Number of erroneous class -1 points
+DApmis = sum(DAp*wfisher <= tfisher); %Number of erroneous class 1 points using fisher method
+DAnmis = sum(DAn*wfisher >= tfisher); %Number of erroneous class -1 points
 DAPosError = DApmis/size(DAp,1)
 DANegError = DAnmis/size(DAn,1)
 
