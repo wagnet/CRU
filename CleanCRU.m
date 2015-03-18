@@ -1,3 +1,5 @@
+%%MAT Cousulting for Chem R US by Tom Wagner, Alexander Allen, MingYi Wang
+
 %read in D
 Doriginal = csvread('DatasetA.csv');
 
@@ -172,8 +174,7 @@ error_percent = total_error/s
 medianp=median(Classp_train);
 medianm=median(Classm_train);
 
-%BMp=Classp_train
-%BMn=Classm_train
+
 BMp=Classp_train-ones(psize,1)*medianp;
 BMn=Classm_train-ones(nsize,1)*medianm;
 
