@@ -168,3 +168,78 @@ for i=1:s,
     end
 end
 error_percent = total_error/s
+
+%% FisherMedian DatasetA
+%{
+medianp=median(Classp_train);
+medianm=median(Classm_train);
+
+%BMp=Classp_train
+%BMn=Classm_train
+%BMp=Classp_train-ones(psize,1)*medianp;
+%BMn=Classm_train-ones(nsize,1)*medianm;
+
+Sw=BMp'*BMp+BMn'*BMn;
+wFishMed = Sw\(medianp-medianm)';
+wFishMed=wFishMed/norm(wFishMed)
+
+tFishMed=(medianp+medianm)./2*wFishMed
+
+MedFishPosErrorTrain = sum(Classp_train*wFishMed <= tFishMed);
+MedFishNegErrorTrain = sum(Classm_train*wFishMed >= tFishMed);
+MedFishTrainError = ((MedFishPosErrorTrain + MedFishNegErrorTrain)/(size(Train,1)));
+
+MedFishPosErrorTest = sum(Classp_test*wFishMed <= tFishMed);
+MedFishNegErrorTest = sum(Classm_test*wFishMed >= tFishMed);
+MedFishTestError= ((MedFishPosErrorTest + MedFishNegErrorTest)/(size(Test,1)));
+
+HistClass(Classp_test,Classm_test,wFishMed,tFishMed,...
+    'MedianFisher Method Testing Results',MedFishTestError);
+
+HistClass(Classp_train,Classm_train,wFishMed,tFishMed,...
+    'MedianFisher Training Results',MedFishTrainError);
+%}
+%% DatasetV Analysis
+
+
+DV = csvread('DatasetV.csv');
+
+IDV=DV(:,1); %id column
+DV=DV(:,2:end);
+
+[m,n] = size(DV);
+
+DVmean = (1/m)*ones(1,m)*DV %mean for DatasetV
+
+% image for mean
+figure                      
+imagesc(DVmean)
+title('Mean Vector DatasetV')
+colormap(gray)
+colorbar
+ 
+%Prediction by fisher LDA method
+PClassCount = sum(DV*wfisher > tfisher)
+NClassCount = sum(DV*wfisher < tfisher)
+
+classes=ones(m,1);
+for i=1:m,
+    if(DV(i,:)*wfisher <= tfisher)
+        classes(i,1)=-1;
+    end 
+end
+
+DVLabels = cat(2,IDV,classes);
+csvwrite('DatasetVnames.csv',DVLabels);
+
+%Covariance of DV
+DV_centered = (DV - (1/m)*(ones(m,m)*DV));
+CovDV = (1/(m-1))*DV_centered'*DV_centered
+
+
+%image of covariance of DatasetV
+figure              
+imagesc(CovDV)
+title('Covariance Matrix of DatasetV')
+colormap(gray)
+colorbar
