@@ -84,7 +84,7 @@ Classp_test = Test(YTest==1,:);
 Classm_test = Test(YTest==-1,:);
 
 %% Mean Method on DatasetA
-%{
+
 
 %Calculate the mean classifier 
 
@@ -116,7 +116,7 @@ HistClass(Classp_train,Classm_train,w,t,...
 
 HistClass(Classp_train,Classm_train,w,t,...
     'Mean Method Testing Results',MeanTestError); %Histogram of Mean Testing Results
-%}
+
 
 %% Fisher method on DatasetA
 
@@ -125,10 +125,8 @@ meanm=mean(Classm_train);
 
 psize=size(Classp_train,1)
 nsize=size(Classm_train,1)
-Bp=Classp_train
-Bn=Classm_train
-%Bp=Classp_train-ones(psize,1)*meanp
-%Bn=Classm_train-ones(nsize,1)*meanm;
+Bp=Classp_train-ones(psize,1)*meanp
+Bn=Classm_train-ones(nsize,1)*meanm;
 
 Sw=Bp'*Bp+Bn'*Bn;
 wfisher = Sw\(meanp-meanm)';
@@ -170,14 +168,14 @@ end
 error_percent = total_error/s
 
 %% FisherMedian DatasetA
-%{
+
 medianp=median(Classp_train);
 medianm=median(Classm_train);
 
 %BMp=Classp_train
 %BMn=Classm_train
-%BMp=Classp_train-ones(psize,1)*medianp;
-%BMn=Classm_train-ones(nsize,1)*medianm;
+BMp=Classp_train-ones(psize,1)*medianp;
+BMn=Classm_train-ones(nsize,1)*medianm;
 
 Sw=BMp'*BMp+BMn'*BMn;
 wFishMed = Sw\(medianp-medianm)';
@@ -198,7 +196,7 @@ HistClass(Classp_test,Classm_test,wFishMed,tFishMed,...
 
 HistClass(Classp_train,Classm_train,wFishMed,tFishMed,...
     'MedianFisher Training Results',MedFishTrainError);
-%}
+
 %% DatasetV Analysis
 
 
