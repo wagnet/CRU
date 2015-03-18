@@ -119,9 +119,9 @@ HistClass(Classp_train,Classm_train,w,t,...
 %}
 
 %% Fisher method on DatasetA
+
 meanp=mean(Classp_train);
 meanm=mean(Classm_train);
-
 
 psize=size(Classp_train,1)
 nsize=size(Classm_train,1)
@@ -156,3 +156,15 @@ FisherTestError= ((FisherPosErrorTest + FisherNegErrorTest)/(size(Test,1)))
 
 HistClass(Classp_test,Classm_test,wfisher,tfisher,...
     'Fisher Method Testing Results',FisherTestError); % Histogram of Fisher Testing Results
+
+%% KNN classifier on Test set
+
+classifier=knnsearch(Train,Test);
+total_error=0;
+[s,z]=size(Test)
+for i=1:s,
+    if(YTest(i)~=YTrain(classifier(i)))
+        total_error=total_error+1;
+    end
+end
+error_percent = total_error/s
