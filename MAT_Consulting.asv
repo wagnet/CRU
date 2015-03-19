@@ -146,7 +146,8 @@ tfisher=(meanp+meanm)./2*wfisher
 FisherPosErrorTrain = sum(Classp_train*wfisher <= tfisher);
 FisherNegErrorTrain = sum(Classm_train*wfisher >= tfisher);
 
-FisherTrainError= ((FisherPosErrorTrain + FisherNegErrorTrain)/(size(Train,1)))  
+FisherTrainError= ((FisherPosErrorTrain + FisherNegErrorTrain)...
+    /(size(Train,1)))  
 
 % Histogram of Fisher Training Results
 HistClass(Classp_train,Classm_train,wfisher,tfisher,...
@@ -191,13 +192,11 @@ tFishMed=(medianp+medianm)./2*wFishMed
 
 MedFishPosErrorTrain = sum(Classp_train*wFishMed <= tFishMed);
 MedFishNegErrorTrain = sum(Classm_train*wFishMed >= tFishMed);
-MedFishTrainError=((MedFishPosErrorTrain + MedFishNegErrorTrain)...
-    /(size(Train,1)))
+MedFishTrainError=((MedFishPosErrorTrain + MedFishNegErrorTrain)/(size(Train,1)))
 
 MedFishPosErrorTest = sum(Classp_test*wFishMed <= tFishMed);
 MedFishNegErrorTest = sum(Classm_test*wFishMed >= tFishMed);
-MedFishTestError= ((MedFishPosErrorTest + MedFishNegErrorTest)...
-    /(size(Test,1)))
+MedFishTestError= ((MedFishPosErrorTest + MedFishNegErrorTest)/(size(Test,1)))
 
 HistClass(Classp_test,Classm_test,wFishMed,tFishMed,...
     'MedianFisher Method Testing Results',MedFishTestError);
@@ -224,7 +223,7 @@ title('Mean Vector DatasetV')
 colormap(gray)
 colorbar
  
-%Prediction by Fisher LDA method
+%Prediction by fisher LDA method
 PClassCount = sum(DV*wfisher > tfisher)
 NClassCount = sum(DV*wfisher < tfisher)
 
@@ -240,7 +239,7 @@ csvwrite('MAT_Consulting_DSV_prediction.csv',DVLabels);
 
 %Covariance of DV
 DV_centered = (DV - (1/m)*(ones(m,m)*DV));
-CovDV = (1/(m-1))*DV_centered'*DV_centered;
+CovDV = (1/(m-1))*DV_centered'*DV_centered
 
 
 %image of covariance of DatasetV
@@ -253,14 +252,13 @@ colorbar
 
 DV_labeled = csvread('MAT_Consulting_DSV_prediction.csv');
 
-DVPos=sum(DV_labeled(:,2)==1) %Number of points in DV estimated to be class 1
-DVNeg=sum(DV_labeled(:,2)==-1) %Number of points in DB estimated to be class -1
+DVPos = sum(DV_labeled(:,2)==1) %Number of points in DV estimated to be class 1
+DVNeg = sum(DV_labeled(:,2)==-1) %Number of points in DB estimated to be class -1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% DA ErrorsFisher
-
-DApmis=sum(DAp*wfisher <= tfisher); %Number of erroneous class 1 points 
-DAnmis=sum(DAn*wfisher >= tfisher); %Number of erroneous class -1 points
+DApmis = sum(DAp*wfisher <= tfisher); %Number of erroneous class 1 points using fisher method
+DAnmis = sum(DAn*wfisher >= tfisher); %Number of erroneous class -1 points
 DAPosError = DApmis/size(DAp,1)
 DANegError = DAnmis/size(DAn,1)
 
