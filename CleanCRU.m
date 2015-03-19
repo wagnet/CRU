@@ -1,5 +1,7 @@
-%%MAT Cousulting for Chem R US by Tom Wagner, Alexander Allen, MingYi Wang
+%%MAT Cousulting for Chem R US by Thomas Wagner, Alexander Allen, MingYi Wang
 
+
+%%DatasetA processing
 %read in D
 Doriginal = csvread('DatasetA.csv');
 
@@ -229,7 +231,7 @@ for i=1:m,
 end
 
 DVLabels = cat(2,IDV,classes);
-csvwrite('DatasetVnames.csv',DVLabels);
+csvwrite('MAT_Consulting_DSV_prediction.csv',DVLabels);
 
 %Covariance of DV
 DV_centered = (DV - (1/m)*(ones(m,m)*DV));
@@ -244,7 +246,7 @@ colormap(gray)
 colorbar
 
 
-DV_labeled = csvread('DatasetVnames.csv');
+DV_labeled = csvread('MAT_Consulting_DSV_prediction.csv');
 
 DVPos = sum(DV_labeled(:,2)==1) %Number of points in DV estimated to be class 1
 DVNeg = sum(DV_labeled(:,2)==-1) %Number of points in DB estimated to be class -1
