@@ -1,3 +1,7 @@
+%% MAT Cousulting for Chem R US by Thomas Wagner, Alexander Allen, MingYi Wang
+% March 19 2015
+
+%% DatasetA processing
 %read in D
 Doriginal = csvread('DatasetA.csv');
 
@@ -172,8 +176,7 @@ error_percent = total_error/s
 medianp=median(Classp_train);
 medianm=median(Classm_train);
 
-%BMp=Classp_train
-%BMn=Classm_train
+
 BMp=Classp_train-ones(psize,1)*medianp;
 BMn=Classm_train-ones(nsize,1)*medianm;
 
@@ -228,7 +231,7 @@ for i=1:m,
 end
 
 DVLabels = cat(2,IDV,classes);
-csvwrite('DatasetVnames.csv',DVLabels);
+csvwrite('MAT_Consulting_DSV_prediction.csv',DVLabels);
 
 %Covariance of DV
 DV_centered = (DV - (1/m)*(ones(m,m)*DV));
@@ -243,16 +246,16 @@ colormap(gray)
 colorbar
 
 
-DV_lab = csvread('DatasetVnames.csv');
+DV_labeled = csvread('MAT_Consulting_DSV_prediction.csv');
 
-DVPos = sum(DV_lab(:,2)==1);
-DVNeg = sum(DV_lab(:,2)==-1);
+DVPos = sum(DV_labeled(:,2)==1) %Number of points in DV estimated to be class 1
+DVNeg = sum(DV_labeled(:,2)==-1) %Number of points in DB estimated to be class -1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% DA ErrorsFisher
-DApmis = abs(sum(DA*wfisher >= tfisher) - size(DA(Y==1,:),1)); %Number of erroneous class 1 points using fisher method
-DAnmis = abs(sum(DA*wfisher <= tfisher) - size(DA(Y==-1,:),1)); %Number of erroneous class -1 points
+DApmis = sum(DAp*wfisher <= tfisher); %Number of erroneous class 1 points using fisher method
+DAnmis = sum(DAn*wfisher >= tfisher); %Number of erroneous class -1 points
 DAPosError = DApmis/size(DAp,1)
 DANegError = DAnmis/size(DAn,1)
 
-TotalDAError = (DApmis+DAnmis)/size(DA,1)
+TotalDAError = (DApmis+DAnmis)/size(DA,1)%Total error of Fisher on DatasetA
